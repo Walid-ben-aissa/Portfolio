@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Walid Ben Aïssa - Full Stack Engineer</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --accent: #00ff88;
+    --accent2: #00cc6a;
+    --muted: #555555;
+    --text: #e8e8e8;
+    --text2: #999999;
+    --mono: 'Space Mono', monospace;
+    --display: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform 0.18s ease, width 0.2s, height 0.2s;
+    opacity: 0.5;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.4rem 3rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.88);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 0.55rem 1.2rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: transparent;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--accent); color: var(--bg); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 3rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  .hero-glow {
+    position: absolute; top: 20%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,255,136,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 28px; height: 1px;
+    background: var(--accent);
+  }
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    max-width: 14ch;
+  }
+  h1 em {
+    font-style: normal;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--text);
+  }
+  .hero-sub {
+    font-size: 0.85rem;
+    color: var(--text2);
+    max-width: 48ch;
+    line-height: 1.8;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    padding: 0.8rem 2rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: none;
+    text-decoration: none;
+    transition: background 0.2s;
+    font-weight: 700;
+  }
+  .btn-primary:hover { background: #00ffaa; }
+  .btn-outline {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    padding: 0.8rem 2rem;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    background: transparent;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: none;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--text2); color: var(--text); }
+  .hero-stats {
+    position: absolute; bottom: 3rem; right: 3rem;
+    display: flex; gap: 3rem;
+  }
+  .stat-item { text-align: right; }
+  .stat-num {
+    font-family: var(--display);
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+
+  /* SECTIONS */
+  section { padding: 6rem 3rem; }
+  .section-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+  h2 {
+    font-family: var(--display);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 3rem;
+  }
+
+  /* PROJECTS */
+  #projects { background: var(--bg); }
+  .projects-intro {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 4rem; gap: 2rem; flex-wrap: wrap;
+  }
+  .projects-intro p {
+    font-size: 0.8rem;
+    color: var(--text2);
+    max-width: 42ch;
+    line-height: 1.8;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .project-card {
+    background: var(--surface);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: none;
+  }
+  .project-card:hover { background: var(--surface2); }
+  .project-card.featured { grid-column: span 7; }
+  .project-card.side { grid-column: span 5; }
+  .project-card.wide { grid-column: span 12; }
+  .project-card.half { grid-column: span 6; }
+
+  .project-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .project-card:hover::before { transform: scaleX(1); }
+
+  .project-num {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+    font-family: var(--mono);
+  }
+  .project-title {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+  }
+  .project-card.featured .project-title { font-size: 2.2rem; }
+
+  .project-desc {
+    font-size: 0.78rem;
+    color: var(--text2);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    max-width: 55ch;
+    &.long{
+    max-width: 170ch;
+    }
+  }
+
+  /* Image placeholder */
+  .project-img {
+    width: 100%;
+    height: 180px;
+    background: var(--surface2);
+    border: 1px dashed var(--border);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .project-card:hover .project-img { border-color: var(--accent); }
+  .project-img.tall { height: 400px; }
+  .project-img.extra-tall { height: 600px; }
+  .project-img-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 0.75rem;
+  }
+  .project-img svg { opacity: 0.25; }
+
+  .project-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+  /* When an actual image is added, use class .has-image */
+  .project-img.has-image img { display: block; }
+  .project-img.has-image svg,
+  .project-img.has-image .project-img-label { display: none; }
+
+  .stack-tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .tag.accent { border-color: var(--accent); color: var(--accent); }
+  .project-card:hover .tag { border-color: #333; }
+
+  .project-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .project-year { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; }
+  .project-arrow {
+    width: 32px; height: 32px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .project-card:hover .project-arrow {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* How I build section */
+  #process { background: var(--surface); }
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    margin-top: 3rem;
+  }
+  .process-step {
+    background: var(--surface);
+    padding: 2.5rem 2rem;
+    position: relative;
+  }
+  .step-num {
+    font-family: var(--display);
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--surface2);
+    line-height: 1;
+    margin-bottom: 1rem;
+    -webkit-text-stroke: 1px var(--border);
+  }
+  .step-title {
+    font-family: var(--display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .step-desc {
+    font-size: 0.76rem;
+    color: var(--text2);
+    line-height: 1.8;
+  }
+
+  /* STACK */
+  #stack { background: var(--bg); }
+  .stack-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 1rem;
+  }
+  .stack-col h3 {
+    font-family: var(--display);
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  .stack-items { display: flex; flex-direction: column; gap: 0; }
+  .stack-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .stack-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+  .stack-bar-wrap {
+    width: 120px; height: 2px;
+    background: var(--border);
+    position: relative;
+  }
+  .stack-bar {
+    position: absolute; top: 0; left: 0; height: 100%;
+    background: var(--accent);
+    transition: width 1s ease;
+  }
+  .stack-level {
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  /* EXPERIENCE */
+  #experience { background: var(--surface); }
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .exp-item:first-child { border-top: 1px solid var(--border); }
+  .exp-meta { }
+  .exp-period {
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .exp-company {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .exp-role {
+    font-family: var(--display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .exp-desc {
+    font-size: 0.76rem;
+    color: var(--text2);
+    line-height: 1.8;
+  }
+
+  /* CONTACT */
+  #contact {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 3rem;
+  }
+  .contact-big {
+    font-family: var(--display);
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 2rem;
+  }
+  .contact-big span { color: var(--accent); }
+  .contact-links {
+    display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .contact-link {
+    font-size: 0.75rem;
+    color: var(--text2);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.2rem;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .contact-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  footer {
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* Animations */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+    .project-card.featured,
+    .project-card.side,
+    .project-card.half { grid-column: span 12; }
+    .stack-section { grid-template-columns: 1fr; gap: 2rem; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .hero-stats { position: static; margin-top: 3rem; justify-content: flex-start; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">W.<span>BA</span></a>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#process">How I Build</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#experience">Experience</a></li>
+  </ul>
+  <a href="mailto:walid.benaissa.work@gmail.com" class="nav-cta">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-tag fade-in">Full Stack Engineer · Tunis, Tunisia</div>
+  <h1 class="fade-in">Walid<br/>Ben <em>Aïssa</em></h1>
+  <p class="hero-sub fade-in">
+    I build web products from idea to deployment - React frontends,
+    FastAPI backends, AI-powered dashboards, and everything in between.
+    30+ projects shipped. Sessions delivered to 600+ attendees.
+  </p>
+  <div class="hero-actions fade-in">
+    <a href="#projects" class="btn-primary">View Projects</a>
+    <a href="mailto:walid.benaissa.work@gmail.com" class="btn-outline">Get in Touch</a>
+  </div>
+
+  <div class="hero-stats fade-in">
+    <div class="stat-item">
+      <div class="stat-num">30+</div>
+      <div class="stat-label">Projects</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">25+</div>
+      <div class="stat-label">Sessions delivered</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Years Coding</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-intro fade-in">
+    <div>
+      <div class="section-label">Selected Work</div>
+      <h2>Projects I've Built</h2>
+    </div>
+    <p>Each project is a real product - designed, developed, and shipped.</p>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- EasyDo - Featured -->
+    <div class="project-card half fade-in">
+      <div class="project-num">01 - Keysoft · 2025</div>
+      <div class="project-title">EasyDo</div>
+      <div class="project-desc">
+        A full service marketplace connecting freelancers and clients. Built end-to-end: authentication flows, service listings, booking logic, and a relational data layer. Final engineering internship project.
+      </div>
+      <div class="project-img has-image tall" id="easydo-img">
+        <!-- Replace src with your screenshot and add class has-image to this div -->
+        <img src="./easyDo.gif" alt="EasyDo screenshot"/>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <span class="project-img-label">Add screenshot here</span>
+      </div>
+      <div class="stack-tags">
+        <span class="tag accent">React</span>
+        <span class="tag accent">FastAPI</span>
+        <span class="tag accent">SQL</span>
+        <span class="tag">REST API</span>
+        <span class="tag">Auth</span>
+      </div>
+      <div class="project-footer">
+        <span class="project-year">Graduation Project</span>
+        <div class="project-arrow">→</div>
+      </div>
+    </div>
+
+    <!-- DASH -->
+    <div class="project-card half fade-in">
+      <div class="project-num">02 - AIESEC Tunisie · 2022-2025</div>
+      <div class="project-title">D.A.S.H.</div>
+      <div class="project-desc">
+        Internal dashboarding platform built for AIESEC Tunisia to track, analyze, and visualize organizational data. Surfaces KPIs, member activity, and exchange program metrics in real time - giving local and national teams a live pulse on their operations.
+      </div>
+      <div class="project-img has-image tall" id="dash-img">
+        <img src="./dash.gif" alt="DASH screenshot"/>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span class="project-img-label">Add screenshot here</span>
+      </div>
+      <div class="stack-tags">
+        <span class="tag accent">React</span>
+        <span class="tag accent">NodeJS</span>
+        <span class="tag">AIESEC API</span>
+        <span class="tag">Data Viz</span>
+        <span class="tag">Charts</span>
+      </div>
+      <div class="project-footer">
+        <span class="project-year">AIESEC Internal Tool</span>
+        <div class="project-arrow">→</div>
+      </div>
+    </div>
+
+    <!-- Coficab Intelligent Dashboard -->
+    <div class="project-card wide fade-in">
+      <div class="project-num">03 - Coficab · Jan-May 2022</div>
+      <div class="project-title">Intelligent Industrial Dashboard</div>
+      <div class="project-desc long">
+        Built during my internship at Coficab, a global automotive wire and cable manufacturer,
+        this platform monitors machine and server performance across production infrastructure. 
+        Integrates AI-based prediction to detect anomalies, forecast load, and surface actionable 
+        insights on top of 80,000+ data entries. Designed to give operations teams a real-time, 
+        intelligent view of their systems.
+      </div>
+      <div class="project-img has-image extra-tall" id="coficab-img">
+        <img src="./coficab.gif" alt="Coficab Dashboard screenshot"/>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><polyline points="7 10 10 7 13 10 17 6"/></svg>
+        <span class="project-img-label">Add screenshot here</span>
+      </div>
+      <div class="stack-tags">
+        <span class="tag accent">React</span>
+        <span class="tag accent">NodeJS</span>
+        <span class="tag accent">AI / ML</span>
+        <span class="tag">Predictive Analytics</span>
+        <span class="tag">80K+ entries</span>
+        <span class="tag">Industrial IoT</span>
+      </div>
+      <div class="project-footer">
+        <span class="project-year">2022 · Internship Project · Automotive Sector</span>
+        <div class="project-arrow">→</div>
+      </div>
+    </div>
+
+    <!-- Opportunity Manager -->
+    <div class="project-card side fade-in">
+      <div class="project-num">04 - AIESEC International · 2024</div>
+      <div class="project-title">Opportunity<br/>Manager</div>
+      <div class="project-desc">
+        Application management system for local, national, and international opportunities. Handles multi-stage applications, role-based permissions, and cross-border workflows.
+      </div>
+      <div class="project-img has-image tall" id="opp-img">
+        <img src="/mexa.gif" alt="Opportunity Manager screenshot"/>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
+      <div class="stack-tags">
+        <span class="tag accent">React</span>
+        <span class="tag accent">FastAPI</span>
+        <span class="tag accent">MongoDB</span>
+        <span class="tag">RBAC</span>
+      </div>
+      <div class="project-footer">
+        <span class="project-year">Engineering Internship</span>
+        <div class="project-arrow">→</div>
+      </div>
+    </div>
+
+    <!-- QuizApp -->
+    <div class="project-card featured fade-in">
+      <div class="project-num">05 - MintIT · 2021</div>
+      <div class="project-title">Interactive<br/>Quiz App</div>
+      <div class="project-desc">
+        Dynamic quiz platform with real-time question rendering, scoring, and session management. First full React application - built dynamic question trees and state-driven UI. Created using <a href="https://opentdb.com/" target="_blank" rel="noopener noreferrer">https://opentdb.com/</a> API for question data.
+      </div>
+      <div class="project-img has-image tall" id="quiz-img">
+        <img src="./quizme.gif" alt="Quiz App screenshot"/>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span class="project-img-label">Add screenshot here</span>
+      </div>
+      <div class="stack-tags">
+        <span class="tag accent">React</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">Bootstrap</span>
+      </div>
+      <div class="project-footer">
+        <span class="project-year">2021 · First React App</span>
+        <div class="project-arrow">→</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW I BUILD -->
+<section id="process">
+  <div class="section-label fade-in">Process</div>
+  <h2 class="fade-in">How I Build Things</h2>
+  <div class="process-grid">
+    <div class="process-step fade-in">
+      <div class="step-num">01</div>
+      <div class="step-title">Architecture First</div>
+      <div class="step-desc">Before writing a line, I design the data model and system architecture using UML. Clear schemas prevent expensive refactors later.</div>
+    </div>
+    <div class="process-step fade-in">
+      <div class="step-num">02</div>
+      <div class="step-title">API-Driven Backend</div>
+      <div class="step-desc">I build RESTful APIs with FastAPI or NodeJS first - typed, documented, and tested - then wire the frontend to real endpoints, not mocks.</div>
+    </div>
+    <div class="process-step fade-in">
+      <div class="step-num">03</div>
+      <div class="step-title">Component UI in React</div>
+      <div class="step-desc">Clean component trees, smart state management, and responsive design. I build for performance and maintainability, not just shipping speed.</div>
+    </div>
+    <div class="process-step fade-in">
+      <div class="step-num">04</div>
+      <div class="step-title">Data & AI Layer</div>
+      <div class="step-desc">Where relevant, I integrate ML models or predictive analytics - as in D.A.S.H., where AI forecasted trends on 80K+ data entries in real time.</div>
+    </div>
+    <div class="process-step fade-in">
+      <div class="step-num">05</div>
+      <div class="step-title">Agile Iteration</div>
+      <div class="step-desc">Scrum-based sprints, version control discipline with Git, and continuous integration. From solo projects to leading 5-person teams.</div>
+    </div>
+    <div class="process-step fade-in">
+      <div class="step-num">06</div>
+      <div class="step-title">Ship & Reflect</div>
+      <div class="step-desc">Every project ends with a retrospective. What broke? What scaled? What would I build differently? That's what makes the next one better.</div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="section-label fade-in">Technologies</div>
+  <h2 class="fade-in">My Dev Stack</h2>
+  <div class="stack-section fade-in">
+    <div class="stack-col">
+      <h3>Frontend</h3>
+      <div class="stack-items">
+        <div class="stack-item">
+          <span class="stack-name">React</span>
+          <div class="stack-bar-wrap"><div class="stack-bar" style="width:95%"></div></div>
+          <span class="stack-level">Expert</span>
+        </div>
+        <div class="stack-item">
+          <span class="stack-name">JavaScript</span>
+          <div class="stack-bar-wrap"><div class="stack-bar" style="width:90%"></div></div>
+          <span class="stack-level">Expert</span>
+        </div>
+        <div class="stack-item">
+          <span class="stack-name">HTML5 / CSS3</span>
+          <div class="stack-bar-wrap"><div class="stack-bar" style="width:90%"></div></div>
+          <span class="stack-level">Expert</span>
+        </div>
+        <div class="stack-item">
+          <span class="stack-name">Angular</span>
+          <div class="stack-bar-wrap"><div class="stack-bar" style="width:65%"></div></div>
+          <span class="stack-level">Proficient</span>
+        </div>
+        <div class="stack-item">
+          <span class="stack-name">Bootstrap</span>
+          <div class="stack-bar-wrap"><div class="stack-bar" style="width:85%"></div></div>
+          <span class="stack-level">Advanced</span>
+        </div>
+      </div>
+    </div>
+    <div class="stack-col">
+      <h3>Backend & Data</h3>
+      <div class="stack-items">
+        <div class="stack-item">
+          <span class="stack-name">FastAPI</span>
+          <div class="stack-bar-wrap"><div class="stack-bar" style="width:90%"></div></div>
+          <span class="stack-level">Expert</span>
+        </div>
+        <div class="stack-item">
+          <span class="stack-name">NodeJS</span>
+          <div class="stack-bar-wrap"><div class="stack-bar" style="width:85%"></div></div>
+          <span class="stack-level">Advanced</span>
+        </div>
+        <div class="stack-item">
+          <span class="stack-name">Python</span>
+          <div class="stack-bar-wrap"><div class="stack-bar" style="width:88%"></div></div>
+          <span class="stack-level">Advanced</span>
+        </div>
+        <div class="stack-item">
+          <span class="stack-name">SQL / PostgreSQL</span>
+          <div class="stack-bar-wrap"><div class="stack-bar" style="width:80%"></div></div>
+          <span class="stack-level">Advanced</span>
+        </div>
+        <div class="stack-item">
+          <span class="stack-name">MongoDB</span>
+          <div class="stack-bar-wrap"><div class="stack-bar" style="width:75%"></div></div>
+          <span class="stack-level">Advanced</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label fade-in">Background</div>
+  <h2 class="fade-in">Experience & Education</h2>
+  <div class="exp-list">
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-period">Jun - Jul 2021</div>
+        <div class="exp-company">MintIT</div>
+      </div>
+      <div>
+        <div class="exp-role">Junior Developer Intern</div>
+        <div class="exp-desc">Built a dynamic quiz web application in React with question branching and scoring logic.</div>
+      </div>
+    </div>
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-period">Jan - May 2022</div>
+        <div class="exp-company">Coficab</div>
+      </div>
+      <div>
+        <div class="exp-role">Full Stack Developer Intern</div>
+        <div class="exp-desc">Built an intelligent industrial dashboard to monitor machines and servers across Coficab's production infrastructure. Integrated AI-based prediction and data visualization over 80,000+ entries.</div>
+      </div>
+    </div>
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-period">Jul - Sep 2024</div>
+        <div class="exp-company">AIESEC International</div>
+      </div>
+      <div>
+        <div class="exp-role">Engineering Intern</div>
+        <div class="exp-desc">Built the Opportunity Manager platform - a multi-level application management system for international exchange programs. Stack: React, FastAPI, MongoDB.</div>
+      </div>
+    </div>
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-period">Sep 2022 - Jul 2025</div>
+        <div class="exp-company">ESPRIT</div>
+      </div>
+      <div>
+        <div class="exp-role">Engineering Degree - Computer Science</div>
+        <div class="exp-desc">Cycle Ingénieur en Informatique. Graduated with a focus on software architecture, AI/ML, and agile development methodologies.</div>
+      </div>
+    </div>
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-period">Feb 2025 - Jan 2026</div>
+        <div class="exp-company">AIESEC Tunisie</div>
+      </div>
+      <div>
+        <div class="exp-role">National IT Department Head</div>
+        <div class="exp-desc">Managed a team of developers, organized technical sprints, improved data pipelines, and facilitated sessions at international conferences for 60-600 attendees.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label fade-in" style="justify-content: center;">Let's Work</div>
+  <div class="contact-big fade-in">Got a<br/><span>project?</span></div>
+  <p class="fade-in" style="font-size: 0.85rem; color: var(--text2); max-width: 40ch; margin: 0 auto; line-height: 1.8;">
+    I'm open to full-time roles, freelance contracts, and interesting side projects.
+    Let's build something together.
+  </p>
+  <div class="contact-links fade-in">
+    <a href="mailto:walid.benaissa.work@gmail.com" class="contact-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      walid.benaissa.work@gmail.com
+    </a>
+    <a href="tel:+21622200663" class="contact-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      +216 22 200 663
+    </a>
+    <a href="https://www.linkedin.com/in/walid-ben-aissa-a15a15215/" target="_blank" class="contact-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://github.com/Walid-ben-aissa" target="_blank" class="contact-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      GitHub
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Walid Ben Aïssa</span>
+  <span>Tunis, Tunisia</span>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px'; });
+  function animRing() { rx += (mx-rx)*0.12; ry += (my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); }
+  animRing();
+
+  // Fade in on scroll
+  const faders = document.querySelectorAll('.fade-in');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), 60 * (Array.from(faders).indexOf(e.target) % 4));
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  faders.forEach(f => obs.observe(f));
+
+  // Animate stack bars on scroll
+  const bars = document.querySelectorAll('.stack-bar');
+  const barObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.style.width = e.target.style.width; } });
+  });
+  bars.forEach(b => { const w = b.style.width; b.style.width = '0'; setTimeout(() => { barObs.observe(b); b.style.width = w; }, 200); });
+</script>
+</body>
+</html>
