@@ -561,18 +561,109 @@
   ::-webkit-scrollbar-thumb { background: var(--border); }
   ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
+  /* ─── Tablet / small desktop ─── */
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
     .nav-links { display: none; }
     section { padding: 4rem 1.5rem; }
     .hero { padding: 6rem 1.5rem 3rem; }
+
+    /* Projects grid – collapse all cards to full width */
     .project-card.featured,
     .project-card.side,
-    .project-card.half { grid-column: span 12; }
+    .project-card.half,
+    .project-card.wide { grid-column: span 12; }
+
+    /* Slightly shrink tall images so they don't dominate */
+    .project-img.tall       { height: 240px; }
+    .project-img.extra-tall { height: 320px; }
+
+    /* Stack */
     .stack-section { grid-template-columns: 1fr; gap: 2rem; }
+
+    /* Experience */
     .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
-    .hero-stats { position: static; margin-top: 3rem; justify-content: flex-start; }
+
+    /* Hero stats – pull out of absolute position */
+    .hero-stats {
+      position: static;
+      margin-top: 3rem;
+      justify-content: flex-start;
+      gap: 2rem;
+    }
+
     footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 480px) {
+    /* Disable custom cursor on touch devices */
+    .cursor, .cursor-ring { display: none; }
+    body { cursor: auto; }
+    .btn-primary, .btn-outline, .nav-cta { cursor: pointer; }
+    .project-card { cursor: pointer; }
+
+    /* Nav */
+    nav { padding: 0.9rem 1.1rem; }
+    .nav-logo { font-size: 1rem; }
+    .nav-cta {
+      font-size: 0.65rem;
+      padding: 0.45rem 0.9rem;
+    }
+
+    /* Hero */
+    .hero { padding: 5.5rem 1.1rem 2.5rem; min-height: auto; }
+    .hero-tag { font-size: 0.65rem; }
+    h1 { font-size: clamp(2.6rem, 13vw, 4rem); max-width: 100%; }
+    .hero-sub { font-size: 0.8rem; max-width: 100%; margin-bottom: 2rem; }
+    .hero-actions { flex-direction: column; gap: 0.75rem; }
+    .btn-primary, .btn-outline { width: 100%; text-align: center; padding: 0.9rem 1rem; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .stat-num  { font-size: 1.9rem; }
+    .stat-item { text-align: left; }
+
+    /* Sections */
+    section { padding: 3rem 1.1rem; }
+
+    /* h2 */
+    h2 { font-size: clamp(1.7rem, 8vw, 2.4rem); margin-bottom: 2rem; }
+
+    /* Projects intro */
+    .projects-intro { flex-direction: column; align-items: flex-start; margin-bottom: 2rem; gap: 1rem; }
+    .projects-intro p { max-width: 100%; }
+
+    /* Project cards */
+    .project-card { padding: 1.5rem 1.1rem; }
+    .project-card.featured .project-title { font-size: 1.6rem; }
+    .project-img.tall       { height: 200px; }
+    .project-img.extra-tall { height: 240px; }
+
+    /* Process grid – single column */
+    .process-grid { grid-template-columns: 1fr; }
+    .process-step { padding: 1.8rem 1.1rem; }
+    .step-num { font-size: 3rem; }
+
+    /* Stack bars – tighten on small screens */
+    .stack-bar-wrap { width: 80px; }
+    .stack-name { font-size: 0.76rem; }
+
+    /* Experience */
+    .exp-item { padding: 1.5rem 0; }
+    .exp-role { font-size: 1rem; }
+
+    /* Contact */
+    #contact { padding: 4rem 1.1rem; }
+    .contact-big { font-size: clamp(2.2rem, 11vw, 3.5rem); }
+    .contact-links {
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+    .contact-link { font-size: 0.7rem; }
+
+    /* Footer */
+    footer { padding: 1.5rem 1.1rem; }
   }
 </style>
 </head>
